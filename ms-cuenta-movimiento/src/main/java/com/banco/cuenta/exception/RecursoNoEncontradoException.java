@@ -1,15 +1,5 @@
 package com.banco.cuenta.exception;
 
-/**
- * ╔═══════════════════════════════════════════════════════════════════════════╗
- * ║  EXCEPCIÓN: Recurso No Encontrado                                          ║
- * ╠═══════════════════════════════════════════════════════════════════════════╣
- * ║  Se lanza cuando se busca un recurso que no existe                         ║
- * ║  Ejemplo: buscar cliente con ID que no existe                              ║
- * ║                                                                            ║
- * ║  Extiende RuntimeException (unchecked) para no forzar try-catch            ║
- * ╚═══════════════════════════════════════════════════════════════════════════╝
- */
 public class RecursoNoEncontradoException extends RuntimeException {
 
     public RecursoNoEncontradoException(String mensaje) {

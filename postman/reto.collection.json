@@ -1,0 +1,786 @@
+{
+  "info": {
+    "_postman_id": "d6b1c2a9-0a1c-4b2a-9c33-7a90bdb2e999",
+    "name": "Reto TCS",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrlCliente", "value": "http://localhost:8081" },
+    { "key": "baseUrlCuenta", "value": "http://localhost:8082" },
+    { "key": "nombreJose", "value": "Jose Lema" },
+    { "key": "nombreMarianela", "value": "Marianela Montalvo" },
+    { "key": "nombreJuan", "value": "Juan Osorio" },
+    { "key": "clienteIdJose", "value": "CLI001" },
+    { "key": "clienteIdMarianela", "value": "CLI002" },
+    { "key": "clienteIdJuan", "value": "CLI003" },
+    { "key": "cuentaJoseAhorro", "value": "478758" },
+    { "key": "cuentaJoseCorriente", "value": "585545" },
+    { "key": "cuentaMarianelaCorriente", "value": "225487" },
+    { "key": "cuentaMarianelaAhorro", "value": "496825" },
+    { "key": "cuentaJuanAhorro", "value": "495878" },
+    { "key": "desde", "value": "2026-01-01" },
+    { "key": "hasta", "value": "2026-12-31" },
+    { "key": "clientePkJose", "value": "" },
+    { "key": "clientePkMarianela", "value": "" },
+    { "key": "clientePkJuan", "value": "" },
+    { "key": "cuentaPkJoseAhorro", "value": "" },
+    { "key": "cuentaPkJoseCorriente", "value": "" },
+    { "key": "cuentaPkMarianelaCorriente", "value": "" },
+    { "key": "cuentaPkMarianelaAhorro", "value": "" },
+    { "key": "cuentaPkJuanAhorro", "value": "" },
+    { "key": "movPkLast", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Flujo Completo",
+      "item": [
+        {
+          "name": "1) POST /clientes - Jose",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"{{nombreJose}}\",\n  \"genero\": \"M\",\n  \"edad\": 30,\n  \"identificacion\": \"1234567890\",\n  \"direccion\": \"Otavalo sn y principal\",\n  \"telefono\": \"098254785\",\n  \"clienteId\": \"{{clienteIdJose}}\",\n  \"contrasena\": \"1234\",\n  \"estado\": true\n}"
+            },
+            "url": "{{baseUrlCliente}}/clientes"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('201 creado o 409 ya existe', () => pm.expect([201,409]).to.include(pm.response.code));",
+                  "if (pm.response.code === 201) {",
+                  "  const j = pm.response.json();",
+                  "  if (j && j.id != null) pm.collectionVariables.set('clientePkJose', String(j.id));",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "2) POST /clientes - Marianela",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"{{nombreMarianela}}\",\n  \"genero\": \"F\",\n  \"edad\": 28,\n  \"identificacion\": \"0987654321\",\n  \"direccion\": \"Amazonas y NNUU\",\n  \"telefono\": \"097548965\",\n  \"clienteId\": \"{{clienteIdMarianela}}\",\n  \"contrasena\": \"5678\",\n  \"estado\": true\n}"
+            },
+            "url": "{{baseUrlCliente}}/clientes"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('201 creado o 409 ya existe', () => pm.expect([201,409]).to.include(pm.response.code));",
+                  "if (pm.response.code === 201) {",
+                  "  const j = pm.response.json();",
+                  "  if (j && j.id != null) pm.collectionVariables.set('clientePkMarianela', String(j.id));",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "3) POST /clientes - Juan",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"{{nombreJuan}}\",\n  \"genero\": \"M\",\n  \"edad\": 35,\n  \"identificacion\": \"1122334455\",\n  \"direccion\": \"13 junio y Equinoccial\",\n  \"telefono\": \"098874587\",\n  \"clienteId\": \"{{clienteIdJuan}}\",\n  \"contrasena\": \"1245\",\n  \"estado\": true\n}"
+            },
+            "url": "{{baseUrlCliente}}/clientes"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('201 creado o 409 ya existe', () => pm.expect([201,409]).to.include(pm.response.code));",
+                  "if (pm.response.code === 201) {",
+                  "  const j = pm.response.json();",
+                  "  if (j && j.id != null) pm.collectionVariables.set('clientePkJuan', String(j.id));",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "4) POST /cuentas - 478758 (Jose Ahorro)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numeroCuenta\": \"{{cuentaJoseAhorro}}\",\n  \"tipoCuenta\": \"Ahorro\",\n  \"saldoInicial\": 2000,\n  \"estado\": true,\n  \"clienteId\": \"{{clienteIdJose}}\"\n}"
+            },
+            "url": "{{baseUrlCuenta}}/cuentas"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('201 creado o 409 ya existe', () => pm.expect([201,409]).to.include(pm.response.code));",
+                  "if (pm.response.code === 201) {",
+                  "  const j = pm.response.json();",
+                  "  if (j && j.id != null) pm.collectionVariables.set('cuentaPkJoseAhorro', String(j.id));",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "5) POST /cuentas - 225487 (Marianela Corriente)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numeroCuenta\": \"{{cuentaMarianelaCorriente}}\",\n  \"tipoCuenta\": \"Corriente\",\n  \"saldoInicial\": 100,\n  \"estado\": true,\n  \"clienteId\": \"{{clienteIdMarianela}}\"\n}"
+            },
+            "url": "{{baseUrlCuenta}}/cuentas"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('201 creado o 409 ya existe', () => pm.expect([201,409]).to.include(pm.response.code));",
+                  "if (pm.response.code === 201) {",
+                  "  const j = pm.response.json();",
+                  "  if (j && j.id != null) pm.collectionVariables.set('cuentaPkMarianelaCorriente', String(j.id));",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "6) POST /cuentas - 495878 (Juan Ahorros)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numeroCuenta\": \"{{cuentaJuanAhorro}}\",\n  \"tipoCuenta\": \"Ahorros\",\n  \"saldoInicial\": 0,\n  \"estado\": true,\n  \"clienteId\": \"{{clienteIdJuan}}\"\n}"
+            },
+            "url": "{{baseUrlCuenta}}/cuentas"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('201 creado o 409 ya existe', () => pm.expect([201,409]).to.include(pm.response.code));",
+                  "if (pm.response.code === 201) {",
+                  "  const j = pm.response.json();",
+                  "  if (j && j.id != null) pm.collectionVariables.set('cuentaPkJuanAhorro', String(j.id));",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "7) POST /cuentas - 496825 (Marianela Ahorros)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numeroCuenta\": \"{{cuentaMarianelaAhorro}}\",\n  \"tipoCuenta\": \"Ahorros\",\n  \"saldoInicial\": 540,\n  \"estado\": true,\n  \"clienteId\": \"{{clienteIdMarianela}}\"\n}"
+            },
+            "url": "{{baseUrlCuenta}}/cuentas"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('201 creado o 409 ya existe', () => pm.expect([201,409]).to.include(pm.response.code));",
+                  "if (pm.response.code === 201) {",
+                  "  const j = pm.response.json();",
+                  "  if (j && j.id != null) pm.collectionVariables.set('cuentaPkMarianelaAhorro', String(j.id));",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "8) POST /cuentas - 585545 (Jose Corriente)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numeroCuenta\": \"{{cuentaJoseCorriente}}\",\n  \"tipoCuenta\": \"Corriente\",\n  \"saldoInicial\": 1000,\n  \"estado\": true,\n  \"clienteId\": \"{{clienteIdJose}}\"\n}"
+            },
+            "url": "{{baseUrlCuenta}}/cuentas"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('201 creado o 409 ya existe', () => pm.expect([201,409]).to.include(pm.response.code));",
+                  "if (pm.response.code === 201) {",
+                  "  const j = pm.response.json();",
+                  "  if (j && j.id != null) pm.collectionVariables.set('cuentaPkJoseCorriente', String(j.id));",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "9) POST /movimientos - Retiro 575 (478758)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"valor\": -575,\n  \"numeroCuenta\": \"{{cuentaJoseAhorro}}\"\n}"
+            },
+            "url": "{{baseUrlCuenta}}/movimientos"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('201 creado', () => pm.expect(pm.response.code).to.eql(201));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "10) POST /movimientos - Deposito 600 (225487)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"valor\": 600,\n  \"numeroCuenta\": \"{{cuentaMarianelaCorriente}}\"\n}"
+            },
+            "url": "{{baseUrlCuenta}}/movimientos"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('201 creado', () => pm.expect(pm.response.code).to.eql(201));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "11) POST /movimientos - Deposito 150 (495878)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"valor\": 150,\n  \"numeroCuenta\": \"{{cuentaJuanAhorro}}\"\n}"
+            },
+            "url": "{{baseUrlCuenta}}/movimientos"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('201 creado', () => pm.expect(pm.response.code).to.eql(201));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "12) POST /movimientos - Retiro 540 (496825)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"valor\": -540,\n  \"numeroCuenta\": \"{{cuentaMarianelaAhorro}}\"\n}"
+            },
+            "url": "{{baseUrlCuenta}}/movimientos"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('201 creado', () => pm.expect(pm.response.code).to.eql(201));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "13) GET /reportes - Estado de cuenta Marianela",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrlCuenta}}/reportes?clienteId={{clienteIdMarianela}}&desde={{desde}}&hasta={{hasta}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.expect(pm.response.code).to.eql(200));",
+                  "const arr = pm.response.json();",
+                  "pm.test('Respuesta es array', () => pm.expect(Array.isArray(arr)).to.eql(true));",
+                  "if (arr.length > 0) {",
+                  "  pm.test('Cliente es nombre, no ID', () => pm.expect(arr[0]['Cliente']).to.eql(pm.collectionVariables.get('nombreMarianela')));",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Cliente",
+      "item": [
+        {
+          "name": "POST /clientes",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"{{nombreJose}}\",\n  \"genero\": \"M\",\n  \"edad\": 30,\n  \"identificacion\": \"1234567890\",\n  \"direccion\": \"Otavalo sn y principal\",\n  \"telefono\": \"098254785\",\n  \"clienteId\": \"{{clienteIdJose}}\",\n  \"contrasena\": \"1234\",\n  \"estado\": true\n}"
+            },
+            "url": "{{baseUrlCliente}}/clientes"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('201 o 409', () => pm.expect([201,409]).to.include(pm.response.code));",
+                  "if (pm.response.code === 201) {",
+                  "  const j = pm.response.json();",
+                  "  if (j && j.id != null) pm.collectionVariables.set('clientePkJose', String(j.id));",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /clientes",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrlCliente}}/clientes"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.expect(pm.response.code).to.eql(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /clientes/{id}",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrlCliente}}/clientes/{{clientePkJose}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.expect(pm.response.code).to.eql(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PUT /clientes/{id}",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": {{clientePkJose}},\n  \"nombre\": \"{{nombreJose}} Actualizado\",\n  \"genero\": \"M\",\n  \"edad\": 31,\n  \"identificacion\": \"1234567890\",\n  \"direccion\": \"Otavalo sn y principal\",\n  \"telefono\": \"098254785\",\n  \"clienteId\": \"{{clienteIdJose}}\",\n  \"contrasena\": \"1234\",\n  \"estado\": true\n}"
+            },
+            "url": "{{baseUrlCliente}}/clientes/{{clientePkJose}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.expect(pm.response.code).to.eql(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "DELETE /clientes/{id}",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrlCliente}}/clientes/{{clientePkJose}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('204 No Content', () => pm.expect(pm.response.code).to.eql(204));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Cuenta",
+      "item": [
+        {
+          "name": "POST /cuentas",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numeroCuenta\": \"{{cuentaJoseAhorro}}\",\n  \"tipoCuenta\": \"Ahorro\",\n  \"saldoInicial\": 2000,\n  \"estado\": true,\n  \"clienteId\": \"{{clienteIdJose}}\"\n}"
+            },
+            "url": "{{baseUrlCuenta}}/cuentas"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('201 o 409', () => pm.expect([201,409]).to.include(pm.response.code));",
+                  "if (pm.response.code === 201) {",
+                  "  const j = pm.response.json();",
+                  "  if (j && j.id != null) pm.collectionVariables.set('cuentaPkJoseAhorro', String(j.id));",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /cuentas",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrlCuenta}}/cuentas"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.expect(pm.response.code).to.eql(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /cuentas/{id}",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrlCuenta}}/cuentas/{{cuentaPkJoseAhorro}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.expect(pm.response.code).to.eql(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /cuentas/numero/{numeroCuenta}",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrlCuenta}}/cuentas/numero/{{cuentaJoseAhorro}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.expect(pm.response.code).to.eql(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /cuentas/cliente/{clienteId}",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrlCuenta}}/cuentas/cliente/{{clienteIdJose}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.expect(pm.response.code).to.eql(200));",
+                  "pm.test('Es array', () => pm.expect(Array.isArray(pm.response.json())).to.eql(true));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PUT /cuentas/{id}",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": {{cuentaPkJoseAhorro}},\n  \"numeroCuenta\": \"{{cuentaJoseAhorro}}\",\n  \"tipoCuenta\": \"Ahorro\",\n  \"saldoInicial\": 2000,\n  \"estado\": true,\n  \"clienteId\": \"{{clienteIdJose}}\"\n}"
+            },
+            "url": "{{baseUrlCuenta}}/cuentas/{{cuentaPkJoseAhorro}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.expect(pm.response.code).to.eql(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "DELETE /cuentas/{id}",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrlCuenta}}/cuentas/{{cuentaPkJoseAhorro}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('204 No Content', () => pm.expect(pm.response.code).to.eql(204));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Movimiento",
+      "item": [
+        {
+          "name": "POST /movimientos - Deposito",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"valor\": 600,\n  \"numeroCuenta\": \"{{cuentaMarianelaCorriente}}\"\n}"
+            },
+            "url": "{{baseUrlCuenta}}/movimientos"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('201 Created', () => pm.expect(pm.response.code).to.eql(201));",
+                  "const j = pm.response.json();",
+                  "if (j && j.id != null) pm.collectionVariables.set('movPkLast', String(j.id));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST /movimientos - Saldo no disponible",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"valor\": -999999,\n  \"numeroCuenta\": \"{{cuentaJoseAhorro}}\"\n}"
+            },
+            "url": "{{baseUrlCuenta}}/movimientos"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('400 Bad Request', () => pm.expect(pm.response.code).to.eql(400));",
+                  "pm.test('Mensaje Saldo no disponible', () => {",
+                  "  const j = pm.response.json();",
+                  "  pm.expect(j.mensaje).to.include('Saldo no disponible');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /movimientos",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrlCuenta}}/movimientos"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.expect(pm.response.code).to.eql(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /movimientos/{id}",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrlCuenta}}/movimientos/{{movPkLast}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.expect(pm.response.code).to.eql(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET /movimientos/cuenta/{numeroCuenta}",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrlCuenta}}/movimientos/cuenta/{{cuentaMarianelaCorriente}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.expect(pm.response.code).to.eql(200));",
+                  "pm.test('Es array', () => pm.expect(Array.isArray(pm.response.json())).to.eql(true));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "DELETE /movimientos/{id}",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrlCuenta}}/movimientos/{{movPkLast}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('204 No Content', () => pm.expect(pm.response.code).to.eql(204));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Reporte",
+      "item": [
+        {
+          "name": "GET /reportes",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrlCuenta}}/reportes?clienteId={{clienteIdMarianela}}&desde={{desde}}&hasta={{hasta}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 OK', () => pm.expect(pm.response.code).to.eql(200));",
+                  "const arr = pm.response.json();",
+                  "pm.test('Respuesta es array', () => pm.expect(Array.isArray(arr)).to.eql(true));",
+                  "if (arr.length > 0) {",
+                  "  const row = arr[0];",
+                  "  const campos = ['Fecha','Cliente','Numero Cuenta','Tipo','Saldo Inicial','Estado','Movimiento','Saldo Disponible'];",
+                  "  pm.test('Contiene todos los campos', () => campos.forEach(c => pm.expect(row).to.have.property(c)));",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

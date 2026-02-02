@@ -1,0 +1,108 @@
+name: banco-stack
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: banco-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      TZ: America/Guayaquil
+    command: >
+      --default-time-zone=-05:00
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql/init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -proot --silent"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+    networks:
+      - banco-net
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: banco-rabbitmq
+    user: "0:0"
+    environment:
+      TZ: America/Guayaquil
+      RABBITMQ_ERLANG_COOKIE: "banco-cookie-1234567890"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: [ "CMD-SHELL", "rabbitmq-diagnostics -q ping" ]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    networks:
+      - banco-net
+
+
+  ms-cliente-persona:
+    container_name: ms-cliente-persona
+    build:
+      context: ./ms-cliente-persona
+    environment:
+      TZ: America/Guayaquil
+      SERVER_PORT: 8081
+
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/db_cliente?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Guayaquil
+      SPRING_DATASOURCE_USERNAME: banco
+      SPRING_DATASOURCE_PASSWORD: banco
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    ports:
+      - "8081:8081"
+    networks:
+      - banco-net
+
+  ms-cuenta-movimiento:
+    container_name: ms-cuenta-movimiento
+    build:
+      context: ./ms-cuenta-movimiento
+    environment:
+      TZ: America/Guayaquil
+      SERVER_PORT: 8082
+
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/db_cuenta?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Guayaquil
+      SPRING_DATASOURCE_USERNAME: banco
+      SPRING_DATASOURCE_PASSWORD: banco
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    ports:
+      - "8082:8082"
+    networks:
+      - banco-net
+
+networks:
+  banco-net:
+
+volumes:
+  mysql_data:
+  rabbitmq_data:
+

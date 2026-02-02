@@ -1,13 +1,5 @@
 package com.banco.cuenta.exception;
 
-/**
- * ╔═══════════════════════════════════════════════════════════════════════════╗
- * ║  EXCEPCIÓN: Recurso Duplicado                                              ║
- * ╠═══════════════════════════════════════════════════════════════════════════╣
- * ║  Se lanza cuando se intenta crear un recurso que viola unicidad            ║
- * ║  Ejemplo: crear cliente con identificación que ya existe                   ║
- * ╚═══════════════════════════════════════════════════════════════════════════╝
- */
 public class RecursoDuplicadoException extends RuntimeException {
 
     public RecursoDuplicadoException(String mensaje) {
